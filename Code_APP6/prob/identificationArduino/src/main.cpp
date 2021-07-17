@@ -43,6 +43,10 @@ float pulsePWM_ = 0;                // Amplitude de la tension au moteur [-1,1]
 float Axyz[3];                      // Tableau pour accelerometre
 float Gxyz[3];                      // Tableau pour giroscope
 float Mxyz[3];                      // Tableau pour magnetometre
+double vitesse = 0;                 //permet de savoir la vitesse du moteur
+double kp = 0;                      //Proportionnlle pour le PID
+double ki = 0;                      //Integrale pour le PID
+double kd = 0;                      //dérivé pour le PID
 
 /*------------------------- Prototypes de fonctions -------------------------*/
 
@@ -105,6 +109,10 @@ void loop() {
   timerPulse_.update();
   
   // Mise à jour du PID
+  kp = 10;
+  ki = 10;
+  kd = 10;
+  pid_.setGains(kp, ki, kd);
   pid_.run();
 }
 
@@ -210,9 +218,20 @@ void readMsg(){
 // Fonctions pour le PID
 double PIDmeasurement(){
   // TODO
+  double pulse;
+  double distance;
+  double tour;
+  pulse = AX_.readEncoder(0);
+  tour = pulse/3200;
+  distance = tour * 0.06 * 2 * PI;
+  vitesse = distance *millis();
+  Serial.println(vitesse);
+  
+  return vitesse;
 }
 void PIDcommand(double cmd){
   // TODO
+  pulsePWM_ = cmd;
 }
 void PIDgoalReached(){
   // TODO
