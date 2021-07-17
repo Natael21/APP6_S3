@@ -219,14 +219,12 @@ void readMsg(){
 double PIDmeasurement(){
   // TODO
   double pulse;
-  double distance;
   double tour;
   pulse = AX_.readEncoder(0);
   tour = pulse/3200;
-  distance = tour * 0.06 * 2 * PI;
-  vitesse = distance *millis();
-  Serial.println(vitesse);
-  
+  vitesse = tour * (millis()/1000); // En tour dans le temps (Seconde)
+  //Serial.println(vitesse);
+
   return vitesse;
 }
 void PIDcommand(double cmd){
