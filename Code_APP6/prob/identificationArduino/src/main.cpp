@@ -89,11 +89,6 @@ void setup() {
   pid_.setAtGoalFunc(PIDgoalReached);
   pid_.setEpsilon(0.001);
   pid_.setPeriod(200);
-
-  //Déterminer les constantes du PID
-  kp = 10;
-  ki = 10;
-  kd = 10;
 }
 
 /* Boucle principale (infinie) */
@@ -114,7 +109,6 @@ void loop() {
   timerPulse_.update();
   
   // Mise à jour du PID
-  pid_.setGains(kp, ki, kd);
   pid_.run();
 }
 
@@ -167,7 +161,7 @@ void sendMsg() {
   doc["isGoal"] = pid_.isAtGoal();
   doc["actualTime"] = pid_.getActualDt();
   doc["cur_vel"] = PIDmeasurement();
-  doc["cur_pos"] = 
+  doc["cur_pos"] = 0;
 
   // Serialisation
   serializeJson(doc, Serial);
@@ -237,7 +231,7 @@ double PIDmeasurement(){
   double tour;
   pulse = AX_.readEncoder(0);
   tour = pulse/3200;
-  vitesse = tour * (millis()/1000); // En tour dans le temps (Seconde)
+  vitesse = 0;
   //Serial.println(vitesse);
 
   return vitesse;
