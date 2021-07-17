@@ -166,6 +166,8 @@ void sendMsg() {
   doc["gyroZ"] = imu_.getGyroZ();
   doc["isGoal"] = pid_.isAtGoal();
   doc["actualTime"] = pid_.getActualDt();
+  doc["cur_vel"] = PIDmeasurement();
+  doc["cur_pos"] = 
 
   // Serialisation
   serializeJson(doc, Serial);
@@ -217,6 +219,17 @@ void readMsg(){
   }
 }
 
+double distance_moteur()
+{
+  double pulse;
+  double tour;
+  double distance;
+  pulse = AX_.readEncoder(0);
+  tour = pulse/3200;
+  distance = 30;
+  return distance;
+}
+
 // Fonctions pour le PID
 double PIDmeasurement(){
   // TODO
@@ -229,6 +242,7 @@ double PIDmeasurement(){
 
   return vitesse;
 }
+
 void PIDcommand(double cmd){
   // TODO
   pulsePWM_ = cmd;
