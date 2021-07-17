@@ -89,6 +89,11 @@ void setup() {
   pid_.setAtGoalFunc(PIDgoalReached);
   pid_.setEpsilon(0.001);
   pid_.setPeriod(200);
+
+  //Déterminer les constantes du PID
+  kp = 10;
+  ki = 10;
+  kd = 10;
 }
 
 /* Boucle principale (infinie) */
@@ -109,9 +114,6 @@ void loop() {
   timerPulse_.update();
   
   // Mise à jour du PID
-  kp = 10;
-  ki = 10;
-  kd = 10;
   pid_.setGains(kp, ki, kd);
   pid_.run();
 }
