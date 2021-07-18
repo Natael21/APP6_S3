@@ -45,14 +45,14 @@ void RobotDiag::start_recording() {
     // de la fermeture pour interrompre le fil d'exportation).
     run_ = true;
 
-    // TODO : Lancement du fil.
+    // TODO : Lancement du fil.----------------------------------------------------------------------------------------------
 }
 
 void RobotDiag::stop_recording() {
     // Indique que le système de diagnostic doit être arrêté.
     run_ = false;
 
-    // TODO : Fermeture du fil.
+    // TODO : Fermeture du fil.-----------------------------------------------------------------------------------------------
 
     robotsim::stop_and_join();
 
@@ -77,7 +77,13 @@ void RobotDiag::export_loop() {
     // En-tête du fichier CSV, respectez le format.
     fprintf(out, "motor_id;t;pos;vel;cmd\n");
 
-    // TODO: Synchronisation et écriture.
+    // TODO: Synchronisation et écriture.--------------------------------------------------------------------------------------------------------
+    //Natael : J'ai rajouté c'est 4 printf,mais c'est juste un template, ce n'est pas fonctionnelle
+    //fprintf(out, queue_.id);
+    //fprintf(out, queue_.cmd);
+    //fprintf(out, queue_.cur_pos);
+    //fprintf(out, queue_.cur_vel);
+    
     
     fclose(out);
 }
