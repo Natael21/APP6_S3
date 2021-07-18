@@ -149,7 +149,8 @@ void sendMsg() {
   doc["measurements"] = PIDmeasurement();
   doc["voltage"] = AX_.getVoltage();
   doc["current"] = AX_.getCurrent(); 
-  doc["pulsePWM"] = pulsePWM_;
+  //doc["pulsePWM"] = pulsePWM_;
+  doc["cmd"] = pulsePWM_;
   doc["pulseTime"] = pulseTime_;
   doc["inPulse"] = isInPulse_;
   doc["accelX"] = imu_.getAccelX();
@@ -160,8 +161,9 @@ void sendMsg() {
   doc["gyroZ"] = imu_.getGyroZ();
   doc["isGoal"] = pid_.isAtGoal();
   doc["actualTime"] = pid_.getActualDt();
-  doc["cur_vel"] = PIDmeasurement();
   doc["cur_pos"] = distance_moteur();
+  doc["cur_vel"] = PIDmeasurement();
+
 
   // Serialisation
   serializeJson(doc, Serial);
