@@ -161,7 +161,7 @@ void sendMsg() {
   doc["isGoal"] = pid_.isAtGoal();
   doc["actualTime"] = pid_.getActualDt();
   doc["cur_vel"] = PIDmeasurement();
-  doc["cur_pos"] = 0;
+  doc["cur_pos"] = distance_moteur();
 
   // Serialisation
   serializeJson(doc, Serial);
@@ -219,28 +219,35 @@ double distance_moteur()
   double tour;
   double distance;
   pulse = AX_.readEncoder(0);
-  tour = pulse/3200;
-  distance = 30;
+  //64 pulses = 1 tour moteur
+  //3200 pulses = 1 tour sortie du gearbox
+  //Gearbox de 50:1
+  //PASPARTOUR = 64
+  //RAPPORTVITESSE = 50
+  tour = (pulse*RAPPORTVITESSE)/3200;
+  distance = tour*2*PI*(0.006);
+
   return distance;
 }
 
 // Fonctions pour le PID
-double PIDmeasurement(){
-  // TODO
-  double pulse;
-  double tour;
-  pulse = AX_.readEncoder(0);
-  tour = pulse/3200;
-  vitesse = 0;
-  //Serial.println(vitesse);
+double PIDmeasurement()
+{
+  double distance_2 = 0;
+  double vitesse = 0;
+  distance_2 = distance_moteur();
+  vitesse = distance_2*(millis()/1000.0)
 
   return vitesse;
 }
 
-void PIDcommand(double cmd){
-  // TODO
+void PIDcommand(double cmd)
+{
+  //Vitesse du moteur (pulsePWM_) = cmd
   pulsePWM_ = cmd;
 }
-void PIDgoalReached(){
-  // TODO
+
+void PIDgoalReached()
+{
+  // RIEN
 }
