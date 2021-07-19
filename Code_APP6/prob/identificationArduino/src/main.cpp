@@ -47,6 +47,9 @@ double vitesse = 0;                 //permet de savoir la vitesse du moteur
 double kp = 0;                      //Proportionnlle pour le PID
 double ki = 0;                      //Integrale pour le PID
 double kd = 0;                      //dérivé pour le PID
+float distance_2 = 0;
+float t1 = 0;
+float t2 = 0;
 
 /*------------------------- Prototypes de fonctions -------------------------*/
 
@@ -220,14 +223,17 @@ double distance_moteur()
   double pulse;
   double tour;
   double distance;
-  pulse = AX_.readEncoder(0);
+  t1 = millis();
   //64 pulses = 1 tour moteur
   //3200 pulses = 1 tour sortie du gearbox
   //Gearbox de 50:1
   //PASPARTOUR = 64
   //RAPPORTVITESSE = 50
-  tour = (pulse*RAPPORTVITESSE)/3200;
-  distance = tour*2*PI*(0.006);
+  pulse = AX_.readResetEncoder(0);
+  tour = (pulse*RAPPORTVITESSE)/3200.0;
+  distance += tour*2*PI*(0.006);
+  distance_2 = tour*2*PI*(0.006);
+  t2 = millis();
 
   return distance;
 }
@@ -235,10 +241,10 @@ double distance_moteur()
 // Fonctions pour le PID
 double PIDmeasurement()
 {
-  double distance_2 = 0;
   double vitesse = 0;
-  distance_2 = distance_moteur();
-  vitesse = distance_2*(millis()/1000.0)
+  //distance_2 = distance_moteur();
+  //vitesse = distance_2*(millis()/1000.0);
+  vitesse = distance_2*((t2-t1)/1000.0);
 
   return vitesse;
 }
