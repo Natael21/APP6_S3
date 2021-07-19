@@ -44,15 +44,30 @@ void RobotDiag::start_recording() {
     // Indique que le système de diagnostic fonctionne (à mettre à 'false' lors
     // de la fermeture pour interrompre le fil d'exportation).
     run_ = true;
-
-    // TODO : Lancement du fil.
+    
+    /* 
+    //Premier jet de code et d'idée pour comment ça peut fonctionner
+    while(thread == existe)
+    {
+        //bloque un mutex quelconque
+        //appel de la méthode export_loop()
+        //unlock le mutex pour permettre a stop recording de tuer le threads
+        //sleep        
+    }  
+    */
+    
+    // TODO : Lancement du fil.----------------------------------------------------------------------------------------------
 }
 
 void RobotDiag::stop_recording() {
     // Indique que le système de diagnostic doit être arrêté.
     run_ = false;
-
-    // TODO : Fermeture du fil.
+    
+    //bloquer le mutex de start recording
+    //mutex.detach() probablement pour le détruire
+    //unlocker le mutex de start recording
+    
+    // TODO : Fermeture du fil.-----------------------------------------------------------------------------------------------
 
     robotsim::stop_and_join();
 
@@ -77,7 +92,14 @@ void RobotDiag::export_loop() {
     // En-tête du fichier CSV, respectez le format.
     fprintf(out, "motor_id;t;pos;vel;cmd\n");
 
-    // TODO: Synchronisation et écriture.
+    // TODO: Synchronisation et écriture.--------------------------------------------------------------------------------------------------------
+    //Il faut aller chercher les infos envoyé par l'arduino et les print dans un fichier
+    //Natael : J'ai rajouté c'est 4 printf,mais c'est juste un template, ce n'est pas fonctionnelle
+    //fprintf(out, queue_.id);
+    //fprintf(out, queue_.cmd);
+    //fprintf(out, queue_.cur_pos);
+    //fprintf(out, queue_.cur_vel);
+    
     
     fclose(out);
 }
